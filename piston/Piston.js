@@ -1,27 +1,29 @@
-function Piston(specPath) {
-  this.specObject = require(specPath);
-  this.promise = require("bluebird");
-  this.request = require("request");
+'use strict';
 
-  var Action = require(__dirname + "/Action");
-  this.currentActions = new Action(this.specObject, this.promise, this.request);
+function Piston (specPath) {
+  const self = this;
+  const specObject = createSpecObjet(specPath);
+  const request = require('request');
+  const buildRequest = require(__dirname + '/buildRequest.js');
 
-  var actionsNameList = this.currentActions.list();
+  this.stateObject = {};
 
-  for (key in actionsNameList) {
-    var propertyName = actionsNameList[key];
-    var parsedActionUnique = this.currentActions.parseAction(actionsNameList[key]);
-    var promiseUnique = this.currentActions.buildRequest(parsedActionUnique);
-    this[propertyName] = promiseUnique;
+  if (Array.isArray(specObject.actions)) {
+    specObject.actions.forEach((action) => {
+      self[action.name] = buildRequest(action, request, this.stateObject);
+    });
+  } else {
+    self[specObject.actions.name] = buildRequest(specObject.actions, request, this.stateObject);
   }
 }
 
-Piston.prototype.getResponse = function() {
-  return this.currentActions.response;
-};
-
-Piston.prototype.getToken = function() {
-  return this.currentActions.token;
-};
+function createSpecObjet (specPath) {
+  if (specPath.indexOf('json') !== -1) {
+    return require(specPath);
+  } else if ((specPath.indexOf('yml') !== -1) || (specPath.indexOf('yaml') !== -1)) {
+    let YAML = require('yamljs');
+    return YAML.load(specPath);
+  }
+}
 
 module.exports = Piston;
