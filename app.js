@@ -11,7 +11,7 @@ let cheerio = require('cheerio');
 
 transportCardMadrid.getCardExpireDateRawXML(2510010062803)
   .then(data => {
-    console.log(data('a\\:sResulXMLField'));
+    // console.log(data('a\\:sResulXMLField'));
     // console.log(data.html());
     let $ = data;
     // console.log($('a\\:sResulXMLField').text());
