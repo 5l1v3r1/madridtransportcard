@@ -17,7 +17,7 @@
     }
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
@@ -35,8 +35,11 @@
   "license": "MIT",
   "homepage": "https://github.com/MadridTransportCard/madridtransportcard",
   "dependencies": {
-    "cheerio": "^0.19.0",
-    "request": "^2.67.0",
-    "xml2js": "^0.4.15"
+    "cheerio": "0.19.0",
+    "moment": "2.11.1",
+    "request": "2.67.0"
+  },
+  "devDependencies":{
+    "jasmine": "2.4.1"
   }
 }
